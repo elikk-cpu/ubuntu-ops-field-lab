@@ -140,3 +140,35 @@ parent directory. The umask policy requires further review.
 - Three incidents and root cause analyses
 
 Overall LAB 01 acceptance is not yet complete.
+
+## 7. Sudo Privilege Verification
+
+Test date: 2026-10-12.
+
+Initial state:
+- ubuntu has full administrative sudo privileges.
+- developer has no sudo privileges.
+- operator initially had no sudo privileges.
+
+Configured policy:
+- operator may restart ubuntu-ops-api.service as root.
+- No general systemctl or unrestricted sudo access is granted.
+- The sudoers file is owned by root:root with mode 0440.
+- Full sudoers syntax validation passed.
+
+Test results:
+- SUDO-01: API restart authorization; exit 0; PASS.
+- SUDO-02: SSH restart authorization denied; exit 1; PASS.
+- SUDO-03: Developer API restart not authorized; exit 1; PASS.
+- SUDO-04: Arbitrary root command not executed; exit 1; PASS.
+
+The API service is not yet installed. The permitted
+operation was checked against sudo policy, not executed.
+
+Evidence: [Sudo policy](evidence/sudo-policy.txt).
+
+Configuration: [Operator sudoers](../configs/sudoers/ubuntu-ops-operator).
+
+Pending: test the actual service restart and verify
+that service files and executables cannot be modified
+by the operator.

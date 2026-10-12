@@ -1,0 +1,27 @@
+LAB 01 - Sudo privilege verification
+2026-10-12T11:21:40+00:00
+=== Sudo configuration ===
+440 root:root /etc/sudoers.d/ubuntu-ops-operator
+/etc/sudoers: parsed OK
+/etc/sudoers.d/README: parsed OK
+/etc/sudoers.d/ubuntu-ops-operator: parsed OK
+=== Operator policy ===
+Matching Defaults entries for operator on ubuntu-ops-01:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,
+    use_pty
+
+User operator may run the following commands on ubuntu-ops-01:
+    (root) NOPASSWD: /usr/bin/systemctl restart ubuntu-ops-api.service
+=== Developer policy ===
+User developer is not allowed to run sudo on ubuntu-ops-01.
+=== SUDO-01: allowed API restart ===
+/usr/bin/systemctl restart ubuntu-ops-api.service
+Exit code: 0
+=== SUDO-02: forbidden SSH restart ===
+Exit code: 1
+=== SUDO-03: developer API restart ===
+sudo: a password is required
+Exit code: 1
+=== SUDO-04: arbitrary root command ===
+sudo: a password is required
+Exit code: 1

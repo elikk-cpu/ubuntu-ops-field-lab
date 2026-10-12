@@ -1,0 +1,2 @@
+# LAB 01 - Restricted operator privileges
+operator ALL=(root) NOPASSWD: /usr/bin/systemctl restart ubuntu-ops-api.service

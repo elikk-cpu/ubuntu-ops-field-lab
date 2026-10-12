@@ -1,0 +1,24 @@
+LAB 01 - Firewall post-reboot verification
+2026-10-12T12:27:02+00:00
+=== System uptime ===
+ 12:27:02 up 7 min,  1 user,  load average: 0.00, 0.00, 0.00
+=== UFW startup status ===
+enabled
+active
+=== UFW active rules ===
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+172.28.50.10 22/tcp on ens34 ALLOW IN    172.28.50.1               
+
+=== Network interfaces ===
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+ens33            UP             10.50.0.128/24 metric 100 fe80::20c:29ff:feac:d6f9/64 
+ens34            UP             172.28.50.10/24 fe80::20c:29ff:feac:d603/64 
+=== SSH socket status ===
+enabled
+active

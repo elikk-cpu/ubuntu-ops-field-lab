@@ -251,3 +251,55 @@ is still pending.
 - Restrict administrative SSH access to the management network.
 - Verify the SSH network restrictions after reboot.
 - Test unauthorized sources.
+
+## 9. Firewall Verification
+
+Test date: 2026-10-12.
+
+### Initial State
+
+- UFW installed but inactive.
+- No active nftables filtering rules.
+- SSH listening on IPv4 and IPv6 interfaces.
+- Management access required through VMnet11.
+
+### Implemented Policy
+
+- Default incoming: deny.
+- Default outgoing: allow.
+- SSH allowed only from 172.28.50.1 to
+  172.28.50.10:22/tcp via ens34.
+- UFW enabled at system startup.
+
+### Verification Results
+
+| ID | Test | Actual Result | Status |
+|---|---|---|---|
+| FW-01 | Management SSH connection | Allowed | PASS |
+| FW-02 | NAT SSH connection | Blocked | PASS |
+| FW-03 | UFW kernel log inspection | TCP/22 block confirmed | PASS |
+| FW-04 | UFW after reboot | Enabled and active | PASS |
+| FW-05 | Firewall rule persistence | Rule preserved | PASS |
+| FW-06 | Management SSH after reboot | TCP connection successful | PASS |
+| FW-07 | NAT SSH after reboot | TCP connection blocked | PASS |
+
+### Evidence
+
+- [Firewall before reboot](evidence/firewall-pre-reboot.txt)
+- [Firewall after reboot](evidence/firewall-post-reboot.txt)
+- [Windows TCP connectivity tests](evidence/firewall-client.csv)
+- [Reproduction script](../configs/firewall/ufw-policy.sh)
+
+The Windows CSV timestamps use the Windows host's
+local time, while server logs use UTC.
+
+### Conclusion
+
+Administrative SSH access is permitted through
+the dedicated management network.
+
+SSH connections through the NAT interface are
+blocked by UFW. Firewall rules persist after reboot.
+
+The firewall policy script requires manual review
+before activation and must not be executed blindly.

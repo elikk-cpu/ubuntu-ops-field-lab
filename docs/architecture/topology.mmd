@@ -1,0 +1,18 @@
+flowchart TB
+    INTERNET["External network"]
+    NAT["VMnet10 - NAT<br/>10.50.0.0/24"]
+    WIN["Windows Host<br/>172.28.50.1"]
+    MGMT["VMnet11 - Host-only<br/>172.28.50.0/24"]
+
+    subgraph VM["ubuntu-ops-01 | Ubuntu Server 24.04.5"]
+        ENS33["ens33<br/>10.50.0.128 DHCP"]
+        ENS34["ens34<br/>172.28.50.10 Static"]
+        OS[("sda - 20 GB<br/>ext4")]
+        D1[("sdb - 6 GB<br/>Unused")]
+        D2[("sdc - 6 GB<br/>Unused")]
+    end
+
+    INTERNET <--> NAT
+    NAT <--> ENS33
+    WIN <-->|SSH| MGMT
+    MGMT <--> ENS34

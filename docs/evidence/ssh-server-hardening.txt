@@ -1,0 +1,12 @@
+LAB 01 - SSH hardening verification
+2026-10-12T11:43:25+00:00
+=== SSH service status ===
+active
+disabled
+=== SSH configuration syntax ===
+Syntax check exit code: 0
+=== Effective SSH settings ===
+permitrootlogin no
+pubkeyauthentication yes
+passwordauthentication no
+kbdinteractiveauthentication no

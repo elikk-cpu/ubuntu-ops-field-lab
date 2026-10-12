@@ -132,7 +132,6 @@ parent directory. The umask policy requires further review.
 
 - Unauthorized system file modification test
 - Least-privilege sudo verification
-- SSH public key authentication
 - LVM and checksum verification
 - systemd service and timer verification
 - Post-reboot persistence testing
@@ -172,3 +171,83 @@ Configuration: [Operator sudoers](../configs/sudoers/ubuntu-ops-operator).
 Pending: test the actual service restart and verify
 that service files and executables cannot be modified
 by the operator.
+
+## 8. SSH Security Verification
+
+Test date: 2026-10-12.
+
+Initial state:
+- OpenSSH was installed with password authentication enabled.
+- The administrative user was ubuntu.
+- Management address: 172.28.50.10/24.
+- PasswordAuthentication was enabled by cloud-init.
+
+Implemented changes:
+- Generated a dedicated Ed25519 key pair on Windows.
+- Installed the public key in ubuntu's authorized_keys.
+- Restricted SSH directory and file permissions.
+- Disabled password and keyboard-interactive authentication.
+- Disabled direct root SSH login.
+- Preserved public key authentication.
+
+### SSH-01 — Public Key Authentication
+
+Expected: successful login using the selected Ed25519 key
+with password authentication disabled on the client.
+
+Actual: successful SSH login as ubuntu.
+Result: PASS.
+
+### SSH-02 — Password Authentication Rejection
+
+Expected: connection rejected when public key
+authentication is disabled on the client.
+
+Actual: Permission denied (publickey).
+SSH client exit code: 255.
+Result: PASS.
+
+### SSH-03 — SSH Configuration Validation
+
+Expected: valid configuration with public key authentication
+enabled and password authentication disabled.
+
+Actual:
+- sshd syntax validation: exit code 0
+- PubkeyAuthentication: yes
+- PasswordAuthentication: no
+- KbdInteractiveAuthentication: no
+- PermitRootLogin: no
+
+Result: PASS.
+
+### SSH-04 — Post-Reboot Persistence
+
+Expected: SSH accessibility and management network
+configuration remain functional after reboot.
+
+Actual:
+- ssh.socket: enabled
+- ssh.socket: active
+- ens33: 10.50.0.128/24
+- ens34: 172.28.50.10/24
+- Remote SSH session established
+- Effective SSH hardening settings preserved
+
+Result: PASS.
+
+## SSH Evidence
+
+- [Server hardening](evidence/ssh-server-hardening.txt)
+- [Post-reboot verification](evidence/ssh-post-reboot.txt)
+- [SSH configuration](../configs/ssh/00-lab01-hardening.conf)
+
+The positive and negative client authentication tests
+were observed interactively; a stored client-side transcript
+is still pending.
+
+## Remaining Security Work
+
+- Restrict administrative SSH access to the management network.
+- Verify the SSH network restrictions after reboot.
+- Test unauthorized sources.

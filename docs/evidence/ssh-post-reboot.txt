@@ -1,0 +1,18 @@
+LAB 01 - SSH post-reboot verification
+2026-10-12T11:47:18+00:00
+=== System uptime ===
+ 11:47:18 up 1 min,  1 user,  load average: 0.02, 0.01, 0.00
+=== SSH connection ===
+172.28.50.1 44204 172.28.50.10 22
+=== SSH socket ===
+enabled
+active
+=== Network interfaces ===
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+ens33            UP             10.50.0.128/24 metric 100 fe80::20c:29ff:feac:d6f9/64 
+ens34            UP             172.28.50.10/24 fe80::20c:29ff:feac:d603/64 
+=== Effective SSH configuration ===
+permitrootlogin no
+pubkeyauthentication yes
+passwordauthentication no
+kbdinteractiveauthentication no

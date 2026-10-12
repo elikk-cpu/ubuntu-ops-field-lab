@@ -1,0 +1,17 @@
+LAB 01 — File permission verification
+2026-10-12T11:05:06+00:00
+=== ACL-06: operator reads report ===
+LAB01 Report
+Status: OK
+Objects: 150
+Exit code: 0
+=== ACL-07: operator cannot modify report ===
+Checksum before:
+bb8971ce7f1b53bcb7b87e56847b0daefa52193d455dedec63738a8b57cb6009  /srv/ubuntu-ops/reports/sample-report.txt
+sh: 1: cannot create /srv/ubuntu-ops/reports/sample-report.txt: Permission denied
+Write attempt exit code: 2
+Checksum after:
+bb8971ce7f1b53bcb7b87e56847b0daefa52193d455dedec63738a8b57cb6009  /srv/ubuntu-ops/reports/sample-report.txt
+=== ACL-08: developer cannot read report ===
+cat: /srv/ubuntu-ops/reports/sample-report.txt: Permission denied
+Read attempt exit code: 1

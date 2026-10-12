@@ -1,0 +1,19 @@
+LAB 01 - Directory permission verification
+2026-10-12T11:06:56+00:00
+=== ACL-01: developer creates application file ===
+Exit code: 0
+Owner: developer | Group: app-developers | Mode: 664
+=== ACL-02: operator cannot create application file ===
+touch: cannot touch '/srv/ubuntu-ops/app/operator-evidence.txt': Permission denied
+Exit code: 1
+File absent check: 0
+=== ACL-03: developer cannot list reports ===
+ls: cannot open directory '/srv/ubuntu-ops/reports': Permission denied
+Exit code: 2
+=== ACL-04: operator can list reports ===
+sample-report.txt
+Exit code: 0
+=== ACL-05: operator cannot create reports ===
+touch: cannot touch '/srv/ubuntu-ops/reports/operator-evidence.txt': Permission denied
+Exit code: 1
+File absent check: 0

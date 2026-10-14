@@ -1,0 +1,29 @@
+=== Systemd Recovery Verification ===
+2026-10-14T14:49:10+00:00
+=== Service Enabled ===
+enabled
+=== Service Active ===
+active
+=== Process and Restart Counter ===
+MainPID=1473
+NRestarts=1
+=== HTTP Health Check ===
+{"status": "ok", "service": "ubuntu-ops-api"}
+=== Recovery Journal ===
+Oct 14 14:37:14 ubuntu-ops-01 systemd[1]: Started ubuntu-ops-api.service - Ubuntu Ops LAB 01 HTTP API.
+Oct 14 14:37:14 ubuntu-ops-01 python3[1000]: ubuntu-ops-api listening on 127.0.0.1:8080
+Oct 14 14:37:42 ubuntu-ops-01 python3[1000]: 127.0.0.1 - - [14/Oct/2026 14:37:42] "GET /health HTTP/1.1" 200 -
+Oct 14 14:39:31 ubuntu-ops-01 systemd[1]: Stopping ubuntu-ops-api.service - Ubuntu Ops LAB 01 HTTP API...
+Oct 14 14:39:31 ubuntu-ops-01 systemd[1]: ubuntu-ops-api.service: Deactivated successfully.
+Oct 14 14:39:31 ubuntu-ops-01 systemd[1]: Stopped ubuntu-ops-api.service - Ubuntu Ops LAB 01 HTTP API.
+Oct 14 14:39:31 ubuntu-ops-01 systemd[1]: Started ubuntu-ops-api.service - Ubuntu Ops LAB 01 HTTP API.
+Oct 14 14:39:31 ubuntu-ops-01 python3[1432]: ubuntu-ops-api listening on 127.0.0.1:8080
+Oct 14 14:39:50 ubuntu-ops-01 python3[1432]: 127.0.0.1 - - [14/Oct/2026 14:39:50] "GET /health HTTP/1.1" 200 -
+Oct 14 14:45:44 ubuntu-ops-01 systemd[1]: ubuntu-ops-api.service: Sent signal SIGKILL to main process 1432 (python3) on client request.
+Oct 14 14:45:44 ubuntu-ops-01 systemd[1]: ubuntu-ops-api.service: Main process exited, code=killed, status=9/KILL
+Oct 14 14:45:44 ubuntu-ops-01 systemd[1]: ubuntu-ops-api.service: Failed with result 'signal'.
+Oct 14 14:45:47 ubuntu-ops-01 systemd[1]: ubuntu-ops-api.service: Scheduled restart job, restart counter is at 1.
+Oct 14 14:45:47 ubuntu-ops-01 systemd[1]: Started ubuntu-ops-api.service - Ubuntu Ops LAB 01 HTTP API.
+Oct 14 14:45:47 ubuntu-ops-01 python3[1473]: ubuntu-ops-api listening on 127.0.0.1:8080
+Oct 14 14:46:04 ubuntu-ops-01 python3[1473]: 127.0.0.1 - - [14/Oct/2026 14:46:04] "GET /health HTTP/1.1" 200 -
+Oct 14 14:49:10 ubuntu-ops-01 python3[1473]: 127.0.0.1 - - [14/Oct/2026 14:49:10] "GET /health HTTP/1.1" 200 -

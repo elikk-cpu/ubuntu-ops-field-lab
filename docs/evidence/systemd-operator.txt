@@ -1,0 +1,15 @@
+=== Operator Sudo Policy Verification ===
+2026-10-14T14:50:52+00:00
+=== Configured Sudo Permissions ===
+Matching Defaults entries for operator on ubuntu-ops-01:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User operator may run the following commands on ubuntu-ops-01:
+    (root) NOPASSWD: /usr/bin/systemctl restart ubuntu-ops-api.service
+=== Allowed: Restart API ===
+/usr/bin/systemctl restart ubuntu-ops-api.service
+Restart permission exit code: 0
+=== Denied: Stop API ===
+Stop permission exit code: 1
+=== Denied: Arbitrary Root Command ===
+Root command permission exit code: 1

@@ -1,0 +1,10 @@
+LAB 01 - Storage before LVM
+2026-10-12T15:04:25+00:00
+NAME   PATH       SIZE TYPE FSTYPE  MOUNTPOINTS
+sda    /dev/sda    20G disk
+├─sda1 /dev/sda1    1M part
+└─sda2 /dev/sda2   20G part ext4    /
+sdb    /dev/sdb     6G disk
+sdc    /dev/sdc     6G disk
+sr0    /dev/sr0   3.8G rom  iso9660
+/dev/sda2 ext4   /

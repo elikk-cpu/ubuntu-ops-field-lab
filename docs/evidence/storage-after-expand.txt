@@ -1,0 +1,19 @@
+=== Physical Volumes ===
+  PV         VG         Fmt  Attr PSize  PFree
+  /dev/sdb   vg_appdata lvm2 a--  <6.00g    0
+  /dev/sdc   vg_appdata lvm2 a--  <6.00g    0
+=== Volume Groups ===
+  VG         #PV #LV #SN Attr   VSize  VFree
+  vg_appdata   2   1   0 wz--n- 11.99g    0
+=== Logical Volumes ===
+  LV         VG         LSize  Devices
+  lv_appdata vg_appdata 11.99g /dev/sdb(0)
+  lv_appdata vg_appdata 11.99g /dev/sdc(0)
+=== Filesystem Mount ===
+TARGET               SOURCE                            FSTYPE OPTIONS
+/srv/ubuntu-ops/data /dev/mapper/vg_appdata-lv_appdata ext4   rw,relatime
+=== Filesystem Capacity ===
+Filesystem                        Type  Size  Used Avail Use% Mounted on
+/dev/mapper/vg_appdata-lv_appdata ext4   12G   33M   12G   1% /srv/ubuntu-ops/data
+=== SHA256 Integrity ===
+/srv/ubuntu-ops/data/lvm-integrity-test.bin: OK

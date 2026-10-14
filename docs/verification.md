@@ -2,7 +2,7 @@
 
 ## 1. Status
 
-The laboratory is currently in progress.
+The laboratory remains in progress. ACL, SSH, UFW, restricted sudo, LVM, and systemd API verification have passed. Remaining work is listed in Section 6.
 
 File permission verification: 8/8 tests passed.
 
@@ -130,15 +130,19 @@ parent directory. The umask policy requires further review.
 
 ## 6. Pending Verification
 
-- Unauthorized system file modification test
-- Least-privilege sudo verification
-- LVM and checksum verification
-- systemd service and timer verification
-- Post-reboot persistence testing
-- CPU, RAM, swap, and disk I/O diagnostics
-- Three incidents and root cause analyses
+Completed: SSH, UFW, restricted sudo, LVM expansion,
+systemd API, automatic recovery, and reboot persistence.
 
-Overall LAB 01 acceptance is not yet complete.
+Remaining tasks:
+
+- Review developer file creation mode and umask
+- Test unauthorized system file modification
+- Implement and verify a systemd timer
+- Diagnose CPU, RAM, swap, and disk I/O
+- Document three incidents with root cause analyses
+- Preserve the client-side SSH test transcript
+
+Full LAB 01 acceptance remains pending.
 
 ## 7. Sudo Privilege Verification
 
@@ -246,11 +250,14 @@ The positive and negative client authentication tests
 were observed interactively; a stored client-side transcript
 is still pending.
 
-## Remaining Security Work
+## Completed SSH Network Restrictions
 
-- Restrict administrative SSH access to the management network.
-- Verify the SSH network restrictions after reboot.
-- Test unauthorized sources.
+- Administrative SSH restricted to the management network
+- SSH access through the NAT interface blocked by UFW
+- Firewall persistence verified after reboot
+- Unauthorized network access tests completed
+
+See Section 9 for firewall verification evidence.
 
 ## 9. Firewall Verification
 

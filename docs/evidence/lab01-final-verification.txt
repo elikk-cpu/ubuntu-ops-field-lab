@@ -1,0 +1,50 @@
+=== LAB 01 Final Verification ===
+2026-10-14T15:04:49+00:00
+=== SSH Security ===
+permitrootlogin no
+pubkeyauthentication yes
+passwordauthentication no
+=== Firewall ===
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+172.28.50.10 22/tcp on ens34 ALLOW IN    172.28.50.1
+
+=== Filesystem Permissions ===
+drwxrws--- 2770 root:app-developers /srv/ubuntu-ops/app
+drwxr-s--- 2750 root:app-operators /srv/ubuntu-ops/reports
+=== Operator Sudo Permissions ===
+Matching Defaults entries for operator on ubuntu-ops-01:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User operator may run the following commands on ubuntu-ops-01:
+    (root) NOPASSWD: /usr/bin/systemctl restart ubuntu-ops-api.service
+=== LVM Storage ===
+  PV         VG         Fmt  Attr PSize  PFree
+  /dev/sdb   vg_appdata lvm2 a--  <6.00g    0
+  /dev/sdc   vg_appdata lvm2 a--  <6.00g    0
+  VG         #PV #LV #SN Attr   VSize  VFree
+  vg_appdata   2   1   0 wz--n- 11.99g    0
+  LV         VG         Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  lv_appdata vg_appdata -wi-ao---- 11.99g
+TARGET               SOURCE                            FSTYPE OPTIONS
+/srv/ubuntu-ops/data /dev/mapper/vg_appdata-lv_appdata ext4   rw,relatime
+Filesystem                        Type  Size  Used Avail Use% Mounted on
+/dev/mapper/vg_appdata-lv_appdata ext4   12G   33M   12G   1% /srv/ubuntu-ops/data
+/srv/ubuntu-ops/data/lvm-integrity-test.bin: OK
+=== Systemd Service ===
+enabled
+active
+=== HTTP Health Check ===
+{"status": "ok", "service": "ubuntu-ops-api"}
+=== Listening Port ===
+State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+LISTEN 0      5          127.0.0.1:8080      0.0.0.0:*    users:(("python3",pid=1473,fd=3))
+=== Failed Systemd Units ===
+  UNIT LOAD ACTIVE SUB DESCRIPTION
+
+0 loaded units listed.

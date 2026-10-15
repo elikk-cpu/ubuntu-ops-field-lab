@@ -1,0 +1,19 @@
+=== LAB 01 Permission and Umask Verification ===
+2026-10-14T15:25:49+00:00
+=== Developer Umask ===
+0002
+=== Created File Permissions ===
+664 developer:app-developers /srv/ubuntu-ops/app/lab01-umask-test.txt
+660 developer:app-developers /srv/ubuntu-ops/app/lab01-secure-test.txt
+=== Operator Access Denial ===
+PASS: operator cannot read application file
+=== Protected System File ===
+644 root:root /etc/ubuntu-ops-lab01-protected.txt
+=== Developer Write Attempt ===
+sh: 1: cannot create /etc/ubuntu-ops-lab01-protected.txt: Permission denied
+PASS: developer write denied
+=== Operator Write Attempt ===
+sh: 1: cannot create /etc/ubuntu-ops-lab01-protected.txt: Permission denied
+PASS: operator write denied
+=== Protected File Size ===
+0 /etc/ubuntu-ops-lab01-protected.txt

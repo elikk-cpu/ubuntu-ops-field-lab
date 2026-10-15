@@ -2,7 +2,7 @@
 
 ## 1. Status
 
-The laboratory remains in progress. ACL, SSH, UFW, restricted sudo, LVM, and systemd API verification have passed. Remaining work is listed in Section 6.
+All planned technical LAB 01 verification exercises have been completed. Final documentation review and GitHub publication remain.
 
 File permission verification: 8/8 tests passed.
 
@@ -124,25 +124,32 @@ Confirmed:
 - Authorized report reading
 - Test file integrity preservation
 
-The developer-created file has mode 664.
-The effective restriction currently depends on the
-parent directory. The umask policy requires further review.
+The default umask 0002 produced file mode 0664.
+A temporary umask 0007 produced file mode 0660.
+SGID group inheritance and access restrictions were verified.
+Unauthorized system file modification was denied.
 
-## 6. Pending Verification
+Evidence: [Final permission tests](evidence/permissions-final.txt).
 
-Completed: SSH, UFW, restricted sudo, LVM expansion,
-systemd API, automatic recovery, and reboot persistence.
+## 6. Verification Completion Status
 
-Remaining tasks:
+Technical verification completed by 2026-10-14:
 
-- Review developer file creation mode and umask
-- Test unauthorized system file modification
-- Implement and verify a systemd timer
-- Diagnose CPU, RAM, swap, and disk I/O
-- Document three incidents with root cause analyses
-- Preserve the client-side SSH test transcript
+- SSH and UFW security checks
+- DAC, SGID, umask, and unauthorized write checks
+- Restricted sudo and actual API service restart
+- LVM expansion, persistence, and SHA256 integrity
+- Systemd API recovery and reboot persistence
+- Periodic systemd healthcheck timer
+- CPU, memory, swap, and disk I/O diagnostics
+- Three controlled incidents with RCA reports
+- Windows SSH tests and saved client transcript
 
-Full LAB 01 acceptance remains pending.
+Remaining project tasks:
+
+- Final bilingual documentation review
+- Repository consistency checks
+- Git commit and GitHub push
 
 ## 7. Sudo Privilege Verification
 
@@ -165,16 +172,18 @@ Test results:
 - SUDO-03: Developer API restart not authorized; exit 1; PASS.
 - SUDO-04: Arbitrary root command not executed; exit 1; PASS.
 
-The API service is not yet installed. The permitted
-operation was checked against sudo policy, not executed.
+The API service is installed and enabled.
+An authorized restart by operator was successfully executed,
+and the service process PID changed.
 
 Evidence: [Sudo policy](evidence/sudo-policy.txt).
 
 Configuration: [Operator sudoers](../configs/sudoers/ubuntu-ops-operator).
 
-Pending: test the actual service restart and verify
-that service files and executables cannot be modified
-by the operator.
+The operator was denied write permission on both
+the systemd unit and the API source file.
+
+Evidence: [Service file protection](evidence/sudo-service-file-protection.txt).
 
 ## 8. SSH Security Verification
 
@@ -246,9 +255,10 @@ Result: PASS.
 - [Post-reboot verification](evidence/ssh-post-reboot.txt)
 - [SSH configuration](../configs/ssh/00-lab01-hardening.conf)
 
-The positive and negative client authentication tests
-were observed interactively; a stored client-side transcript
-is still pending.
+Positive and negative SSH authentication tests were
+repeated from Windows. The client transcript was saved.
+
+Evidence: [Windows SSH transcript](evidence/ssh-client.txt).
 
 ## Completed SSH Network Restrictions
 
@@ -310,3 +320,196 @@ blocked by UFW. Firewall rules persist after reboot.
 
 The firewall policy script requires manual review
 before activation and must not be executed blindly.
+
+## 10. Systemd Healthcheck Timer
+
+Test date: 2026-10-14.
+
+Implemented:
+- ubuntu-ops-healthcheck.service
+- ubuntu-ops-healthcheck.timer
+- HTTP endpoint: http://127.0.0.1:8080/health
+- Healthcheck interval: approximately 5 minutes
+- Service type: oneshot
+- Execution user: developer
+
+Verification:
+- Unit syntax validation: PASS
+- Manual healthcheck execution: PASS
+- Timer enabled: PASS
+- Timer active: PASS
+- Automatic scheduled execution: PASS
+- HTTP health response: status ok
+
+The timer performs periodic checks without exposing
+the HTTP API outside the loopback interface.
+
+Evidence:
+- [Systemd timer verification](evidence/systemd-timer.txt)
+
+Configuration:
+- [Healthcheck service](../configs/systemd/ubuntu-ops-healthcheck.service)
+- [Healthcheck timer](../configs/systemd/ubuntu-ops-healthcheck.timer)
+
+## 11. Performance Diagnostics
+
+Test date: 2026-10-14.
+
+### CPU
+
+Environment: 2 virtual CPUs.
+
+A controlled CPU workload was generated using yes
+with a 15-second timeout.
+
+Observed:
+- CPU utilization increased during the test.
+- The system returned to idle after the workload.
+- No disk I/O wait problem was observed.
+- HTTP API remained functional after testing.
+
+Evidence: [CPU diagnostics](evidence/performance-cpu.txt).
+
+### RAM and Swap
+
+A controlled Python workload allocated and touched
+approximately 256 MiB of memory.
+
+Observed:
+- Used RAM increased during the workload.
+- Memory usage decreased after completion.
+- Swap usage remained at zero.
+- No swap-in or swap-out activity was observed.
+- HTTP API remained functional.
+
+Evidence: [Memory diagnostics](evidence/performance-memory.txt).
+
+### Disk I/O
+
+A temporary 512 MiB file was used for controlled
+write and read tests on the LVM filesystem.
+
+Observed:
+- Write operation completed.
+- Read operation completed.
+- Original LVM test data retained its SHA256 hash.
+- Temporary I/O test file was removed.
+- Filesystem capacity returned to normal.
+
+The observed transfer rates reflect this VMware
+test environment and are not physical disk benchmarks.
+
+Evidence: [Disk I/O diagnostics](evidence/performance-disk.txt).
+
+### Conclusion
+
+CPU, RAM, swap, and disk I/O diagnostic procedures
+were exercised successfully.
+
+These are controlled laboratory observations,
+not production performance or capacity guarantees.
+
+## 12. Incident Response and Root Cause Analysis
+
+Test date: 2026-10-14.
+
+Three controlled incidents were reproduced, investigated,
+resolved, and documented.
+
+### INC-01 — HTTP API Unavailable
+
+Scenario:
+The ubuntu-ops-api.service was deliberately stopped.
+
+Symptoms:
+- Service state: inactive (dead)
+- HTTP connection refused
+- curl exit code: 7
+
+Root cause:
+An explicit administrative systemctl stop operation.
+
+Resolution:
+The service was started using systemctl start.
+
+Verification:
+- Service state returned to active
+- HTTP /health returned status ok
+- Result: PASS
+
+An explicit stop is different from an unexpected process
+failure. Restart=on-failure does not override an
+intentional administrator stop.
+
+RCA: [INC-01 — API Unavailable](incidents/incident-01-api-unavailable.md).
+
+### INC-02 — Permission Denied
+
+Scenario:
+The developer user attempted to modify a protected
+configuration file under /etc.
+
+Symptoms:
+- Permission denied
+- Configuration remained unchanged
+
+Root cause:
+The configuration file was owned by root:root
+with mode 0644. The developer lacked write access.
+
+Resolution:
+An authorized administrator changed the configuration
+using sudo tee, without granting additional privileges.
+
+Verification:
+- Original mode=production restored
+- Developer write permission remained denied
+- HTTP API health check passed
+- Temporary test environment removed
+- Result: PASS
+
+RCA: [INC-02 — Permission Denied](incidents/incident-02-permission-denied.md).
+
+Evidence: [Permission incident](evidence/incident-02-permissions.txt).
+
+### INC-03 — No Space Left on Device
+
+Scenario:
+A 70 MiB write was attempted on an isolated
+64 MiB ext4 filesystem image mounted via loop.
+
+Symptoms:
+- No space left on device
+- Filesystem usage: 100%
+- Available capacity: 0
+
+Root cause:
+Available filesystem data blocks were exhausted.
+Free inodes remained available.
+
+Resolution:
+The temporary fill.bin file was removed.
+
+Verification:
+- Filesystem usage returned to 1%
+- Approximately 52 MiB became available
+- New file write succeeded: recovery-ok
+- Original LVM data SHA256: OK
+- Temporary loop filesystem removed
+- Result: PASS
+
+RCA: [INC-03 — Disk Full](incidents/incident-03-disk-full.md).
+
+Evidence: [Disk incident](evidence/incident-03-disk-full.txt).
+
+### Incident Response Conclusion
+
+All three controlled incidents were resolved.
+
+The exercises demonstrated service troubleshooting,
+Linux permission diagnostics, filesystem capacity
+analysis, recovery verification, and RCA documentation.
+
+These incidents were created intentionally in a
+laboratory environment and do not represent
+production outages.

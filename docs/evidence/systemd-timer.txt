@@ -1,0 +1,22 @@
+=== LAB 01 Systemd Timer Verification ===
+2026-10-14T15:38:16+00:00
+=== Timer Enabled ===
+enabled
+=== Timer Active ===
+active
+=== Timer Schedule ===
+NEXT                           LEFT LAST                              PASSED UNIT                         ACTIVATES
+Wed 2026-10-14 15:41:16 UTC 3min 0s Wed 2026-10-14 15:36:16 UTC 1min 59s ago ubuntu-ops-healthcheck.timer ubuntu-ops-healthcheck.service
+
+1 timers listed.
+=== Healthcheck Service Result ===
+Result=success
+ExecMainStatus=0
+ActiveState=inactive
+=== Automatic Execution Journal ===
+Oct 14 15:36:16 ubuntu-ops-01 systemd[1]: Starting ubuntu-ops-healthcheck.service - LAB 01 HTTP API Health Check...
+Oct 14 15:36:16 ubuntu-ops-01 curl[2055]: {"status": "ok", "service": "ubuntu-ops-api"}
+Oct 14 15:36:16 ubuntu-ops-01 systemd[1]: ubuntu-ops-healthcheck.service: Deactivated successfully.
+Oct 14 15:36:16 ubuntu-ops-01 systemd[1]: Finished ubuntu-ops-healthcheck.service - LAB 01 HTTP API Health Check.
+=== Temporary File Cleanup ===
+PASS: temporary file removed

@@ -1,0 +1,34 @@
+=== LAB 01 CPU Load Experiment ===
+Date: 2026-10-14
+Environment: Ubuntu Server VM, 2 vCPU
+
+=== Workload ===
+Command: timeout 15s yes > /dev/null
+Duration: 15 seconds
+Workload exit code: 124 (expected timeout)
+
+=== Baseline ===
+CPU idle: 100%
+Swap I/O: 0
+I/O wait: 0%
+
+=== During Workload ===
+CPU idle: approximately 50%
+User CPU: 22-24%
+System CPU: 27-29%
+I/O wait: 0%
+Swap I/O: 0
+
+=== After Workload ===
+CPU idle: 100%
+Load average: 0.20, 0.06, 0.02
+HTTP health check: PASS
+Response: {"status": "ok", "service": "ubuntu-ops-api"}
+
+=== Conclusion ===
+One CPU-intensive process consumed approximately
+one of the two available vCPUs.
+The workload terminated automatically.
+CPU utilization returned to baseline.
+No swap activity or I/O wait was observed.
+The HTTP API remained healthy after the test.

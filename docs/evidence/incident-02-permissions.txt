@@ -1,0 +1,13 @@
+=== INC-02 Permission Denied Verification ===
+2026-10-14T16:15:54+00:00
+=== File Permissions ===
+644 root:root /etc/ubuntu-ops-lab01-incident02/settings.conf
+=== Developer Identity ===
+uid=1003(developer) gid=1003(developer) groups=1003(developer),100(users),1001(app-developers)
+=== Unauthorized Write Attempt ===
+sh: 1: cannot create /etc/ubuntu-ops-lab01-incident02/settings.conf: Permission denied
+PASS: developer write denied
+=== Restored Configuration ===
+mode=production
+=== Application Health ===
+{"status": "ok", "service": "ubuntu-ops-api"}

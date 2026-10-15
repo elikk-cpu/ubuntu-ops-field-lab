@@ -1,0 +1,10 @@
+[Unit]
+Description=LAB 01 Periodic HTTP API Health Check
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+Unit=ubuntu-ops-healthcheck.service
+
+[Install]
+WantedBy=timers.target

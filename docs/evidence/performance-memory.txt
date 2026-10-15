@@ -1,0 +1,36 @@
+=== LAB 01 Memory Load Experiment ===
+Date: 2026-10-14
+Environment: Ubuntu Server VM, 1.9 GiB RAM, 2 GiB swap
+
+=== Workload ===
+Python bytearray allocation: 256 MiB
+Memory pages initialized: yes
+Workload exit code: 0
+
+=== Before Workload ===
+RAM used: 379 MiB
+RAM available: 1.5 GiB
+Swap used: 0 B
+
+=== During Workload ===
+RAM used: 646 MiB
+RAM free: 735 MiB
+RAM available: 1.2 GiB
+Swap used: 0 B
+Swap si/so: 0 / 0
+
+=== After Workload ===
+RAM used: 403 MiB
+RAM available: 1.5 GiB
+Swap used: 0 B
+
+=== Application Health ===
+HTTP health check: PASS
+Response: {"status": "ok", "service": "ubuntu-ops-api"}
+
+=== Conclusion ===
+RAM usage increased by approximately 267 MiB.
+The workload completed successfully.
+Available memory recovered after process termination.
+No swap activity was observed.
+The HTTP API remained operational after the test.

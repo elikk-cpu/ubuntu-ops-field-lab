@@ -1,0 +1,60 @@
+**********************
+Начало расшифровки PowerShell
+Время начала: 20261014192754
+Имя пользователя: <WINDOWS_HOST>\<WINDOWS_USER>
+Пользователь, от имени которого выполняется запуск: <WINDOWS_HOST>\<WINDOWS_USER>
+Имя конфигурации:
+Компьютер: <WINDOWS_HOST> (Microsoft Windows NT 10.0.19045.0)
+Ведущее приложение: C:\Program Files\WindowsApps\Microsoft.PowerShell_7.6.6.0_x64__8wekyb3d8bbwe\pwsh.dll
+Идентификатор процесса: 21276
+PSVersion: 7.6.6
+PSEdition: Core
+GitCommitId: 7.6.6
+OS: Microsoft Windows 10.0.19045
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Расшифровка начата, выходной файл — <WINDOWS_HOME>\lab01-ssh-client.txt
+<WINDOWS_USER>@<WINDOWS_HOST>  ~  >
+PS>Test-NetConnection -ComputerName 172.28.50.10 -Port 22 |
+  Select-Object ComputerName, RemotePort, TcpTestSucceeded
+
+ComputerName RemotePort TcpTestSucceeded
+------------ ---------- ----------------
+172.28.50.10         22             True
+
+<WINDOWS_USER>@<WINDOWS_HOST>  ~  >
+PS>ssh -i "$HOME\.ssh\lab01_ubuntu_ops" `
+  -o IdentitiesOnly=yes `
+  -o PasswordAuthentication=no `
+  ubuntu@172.28.50.10 `
+  "whoami; hostname; systemctl is-active ubuntu-ops-api.service"
+
+ubuntu
+ubuntu-ops-01
+active
+<WINDOWS_USER>@<WINDOWS_HOST>  ~  >
+<WINDOWS_USER>@<WINDOWS_HOST>  ~  >
+PS>Write-Host "SSH key exit code: $LASTEXITCODE"
+SSH key exit code: 0
+<WINDOWS_USER>@<WINDOWS_HOST>  ~  >
+PS>ssh -o PubkeyAuthentication=no `
+  -o PreferredAuthentications=password `
+  -o KbdInteractiveAuthentication=no `
+  -o NumberOfPasswordPrompts=0 `
+  -o ConnectTimeout=5 `
+  ubuntu@172.28.50.10 "true"
+ubuntu@172.28.50.10: Permission denied (publickey).
+<WINDOWS_USER>@<WINDOWS_HOST>  ~  >
+<WINDOWS_USER>@<WINDOWS_HOST>  ~  >
+PS>Write-Host "Password-only SSH exit code: $LASTEXITCODE"
+Password-only SSH exit code: 255
+<WINDOWS_USER>@<WINDOWS_HOST>  ~  >
+PS>Stop-Transcript
+**********************
+Завершение расшифровки PowerShell
+Время окончания: 20261014192824
+**********************

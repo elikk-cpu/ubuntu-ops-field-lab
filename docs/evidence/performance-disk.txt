@@ -1,0 +1,41 @@
+=== LAB 01 Disk I/O Experiment ===
+Date: 2026-10-14
+Environment: VMware Ubuntu Server, LVM ext4
+
+=== Storage ===
+Volume Group: vg_appdata
+Logical Volume: lv_appdata
+Mount Point: /srv/ubuntu-ops/data
+Filesystem Size: 12 GiB
+
+=== Write Test ===
+Tool: dd
+Input: /dev/zero
+File Size: 512 MiB
+Block Size: 1 MiB
+Direct I/O: enabled
+Elapsed Time: 0.278501 seconds
+Reported Throughput: 1.9 GB/s
+
+=== Read Test ===
+Tool: dd
+Output: /dev/null
+File Size: 512 MiB
+Block Size: 1 MiB
+Direct I/O: enabled
+Elapsed Time: 0.258544 seconds
+Reported Throughput: 2.1 GB/s
+
+=== Integrity ===
+Original LVM integrity test: PASS
+SHA256 verification: OK
+
+=== Limitations ===
+Results were measured inside VMware.
+Zero-filled test data may benefit from storage optimizations.
+Direct I/O does not bypass all host-side caching.
+These results are not physical disk performance guarantees.
+
+=== Conclusion ===
+Read and write operations completed successfully.
+The original integrity test file was unchanged.

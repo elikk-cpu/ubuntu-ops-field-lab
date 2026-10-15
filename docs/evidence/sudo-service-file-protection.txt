@@ -1,0 +1,8 @@
+=== Service File Protection ===
+2026-10-14T16:51:54+00:00
+=== /etc/systemd/system/ubuntu-ops-api.service ===
+644 root:root /etc/systemd/system/ubuntu-ops-api.service
+PASS: operator write permission denied
+=== /srv/ubuntu-ops/app/ubuntu_ops_api.py ===
+640 root:app-developers /srv/ubuntu-ops/app/ubuntu_ops_api.py
+PASS: operator write permission denied
